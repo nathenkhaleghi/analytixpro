@@ -1,14 +1,12 @@
-// src/index.js
 import React from 'react';
-import { createRoot } from 'react-dom/client';
-import './styles/styles.css'; // Ensure this path matches the location of your CSS file
+import ReactDOM from 'react-dom';
 import App from './App';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './Theme';
 
-const container = document.getElementById('root');
-const root = createRoot(container);
-root.render(
-  <React.StrictMode>
+ReactDOM.render(
+  <ThemeProvider theme={theme}>
     <App />
-  </React.StrictMode>
+  </ThemeProvider>,
+  document.getElementById('root')
 );
