@@ -24,3 +24,4 @@ export const analyzeData = async (filename) => {
 export const visualizeData = async (filename) => {
   return await axios.post(`${API_URL}/visualize`, { filename });
 };
+

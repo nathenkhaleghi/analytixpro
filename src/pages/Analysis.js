@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Paper, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Container, Paper, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material'; // Import Button
 import { motion } from 'framer-motion'; // Import framer-motion
 import { makeStyles } from '@mui/styles';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: '1.5rem',
     },
   },
+  button: {
+    marginTop: '2rem', // Styling for the button
+  },
 }));
 
 const Analysis = () => {
@@ -56,6 +60,7 @@ const Analysis = () => {
   const [summary, setSummary] = useState(null);
   const [info, setInfo] = useState(null);
   const classes = useStyles();
+  const navigate = useNavigate(); // Use useNavigate hook
 
   useEffect(() => {
     const fetchAnalysis = async () => {
@@ -78,8 +83,12 @@ const Analysis = () => {
     visible: { opacity: 1, y: 0 },
   };
 
+  const handleVisualizationRedirect = () => {
+    navigate('/visualization'); // Redirect to visualizations page
+  };
+
   return (
-    <Container>
+    <Container className={classes.root}>
       <motion.div
         initial="hidden"
         animate="visible"
@@ -157,6 +166,14 @@ const Analysis = () => {
           </Paper>
         </motion.div>
       )}
+      <Button
+        variant="contained"
+        color="primary"
+        className={classes.button}
+        onClick={handleVisualizationRedirect}
+      >
+        View Visualizations
+      </Button>
     </Container>
   );
 };

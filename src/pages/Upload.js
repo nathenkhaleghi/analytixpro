@@ -1,5 +1,3 @@
-// src/pages/Upload.js
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Container, Typography, Button, Link } from '@mui/material';
@@ -11,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100vh',
     width: '100vw',
-    background: 'inherit', // Ensure it inherits the global background color
+    background: 'inherit',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -20,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     padding: '2rem',
     boxSizing: 'border-box',
-    overflow: 'hidden', // Prevents potential overflow causing a different background
+    overflow: 'hidden',
     [theme.breakpoints.down('sm')]: {
       padding: '1rem',
     },
@@ -106,6 +104,7 @@ const useStyles = makeStyles((theme) => ({
 const Upload = () => {
   const [file, setFile] = useState(null);
   const [uploaded, setUploaded] = useState(false);
+  const [error, setError] = useState(null);
   const classes = useStyles();
 
   // Define animation variants
@@ -119,19 +118,27 @@ const Upload = () => {
   };
 
   const handleUpload = async () => {
+    if (!file) {
+      alert('Please select a file to upload');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('file', file);
 
     try {
-      await axios.post('http://127.0.0.1:5000/upload', formData, {
+      const response = await axios.post('http://127.0.0.1:5000/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.log(response.data);
       alert('File successfully uploaded');
       setUploaded(true);
+      setError(null);  // Clear any previous errors
     } catch (error) {
       console.error('Error uploading file:', error);
+      setError('Error uploading file. Please try again.');
       alert('Error uploading file');
     }
   };
@@ -167,6 +174,11 @@ const Upload = () => {
           Upload
         </Button>
       </motion.div>
+      {error && (
+        <Typography className={classes.resultMessage}>
+          {error}
+        </Typography>
+      )}
       {uploaded && (
         <motion.div
           initial="hidden"
